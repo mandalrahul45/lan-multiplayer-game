@@ -71,7 +71,6 @@ def clientHandler(conn,unique_id):
             cmnd = cmnd.decode(ENCODING_FORMAT)
             #apply cmnd to player in ther server
             #replyToCmnd = (players,s_game_time)
-            print(cmnd)
             if cmnd.split()[0]=="move":
                 players[uid]["x"]= int(cmnd.split()[1])
                 players[uid]["y"]= int(cmnd.split()[2])

@@ -1,8 +1,10 @@
 import datetime
+
 from client import Connection
 import pygame
 from player import Player
 from pytmx.util_pygame import load_pygame
+from camera import CameraGroup
 pygame.init()
 
 #inititlized the screen and set caption:
@@ -27,21 +29,22 @@ class Tile(pygame.sprite.Sprite):
     def __init__(self,pos,surf,groups):
         super().__init__(groups)
         self.image = surf
+        # self.image = pygame.transform.scale(self.image,(100,100))
         self.rect = self.image.get_rect(topleft = pos)
 
-tmx_data = load_pygame('Tiled 2\\Base 1.tmx')
-sprite_group = pygame.sprite.Group()
+tmx_data = load_pygame('Tiled 2\\\\newmap.tmx')
+camera_group = CameraGroup(screen)
 
 for layer in tmx_data.visible_layers:
     if hasattr(layer,'data'):
         for x,y,surf in layer.tiles():
             pos = (x * 128, y * 128)
-            Tile(pos = pos, surf = surf, groups = sprite_group)
+            Tile(pos = pos, surf = surf, groups = camera_group)
  
 for obj in tmx_data.objects:
     pos = obj.x,obj.y
     if obj.type in ('Building', 'Vegetation'):
-        Tile(pos = pos, surf = obj.image, groups = sprite_group)
+        Tile(pos = pos, surf = obj.image, groups = camera_group)
 
 
 def main(adm,name):
@@ -98,22 +101,29 @@ def main(adm,name):
             
 
             font = pygame.font.SysFont("arial",55)
-            text = font.render(changeTimeFormat(int(game_time)), True,"black")
-            textRect = text.get_rect()
-            textRect.center = (WIDTH // 2, HEIGHT // 2)
+            time_text = font.render(changeTimeFormat(int(game_time)), True,"black")
+            textRect = time_text.get_rect()
+            textRect.topleft = (10, 10)
 
-            players_group = pygame.sprite.Group()
-            
+            all_playersList_toRemove=[]
+            current_player_sprite = ""
             #create all the sprites for the players
             for plr in players:
                 # print(plr)
                 plr_sprite = Player(players[plr]["x"],players[plr]["y"],players[plr]["characterType"],players[plr]["name"],players[plr]["direction_facing"])
-                players_group.add(plr_sprite)
 
-            screen.blit(text,textRect)
-            sprite_group.draw(screen)
-            players_group.draw(screen)
-            players_group.update()
+                if plr==uid:
+                    current_player_sprite = plr_sprite
+
+                all_playersList_toRemove.append(plr_sprite)
+
+                camera_group.add(plr_sprite)
+
+            camera_group.draw_group_sprites(current_player_sprite)
+            camera_group.remove(all_playersList_toRemove)
+            camera_group.update()
+            screen.blit(time_text,textRect)
+
             pygame.display.update()
 
     server.disconnect()
