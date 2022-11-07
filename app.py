@@ -70,12 +70,29 @@ def main(adm,name):
             data ="get"
             keys = pygame.key.get_pressed()
 
-
+            direction = ""
+            moved = False
             if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
                 current_player["x"] = current_player["x"]+10
+                direction = "RIGHT"
+                moved = True
 
-                data = "move "+ str(current_player["x"]) + " " + str(current_player["y"])
-                print(data.split())
+            if keys[pygame.K_LEFT] or keys[pygame.K_a]:
+                current_player["x"] = current_player["x"]-10
+                direction = "LEFT"
+                moved = True
+
+            if keys[pygame.K_UP] or keys[pygame.K_w]:
+                current_player["y"] = current_player["y"]-10
+                direction = "UP"
+                moved = True
+
+            if keys[pygame.K_DOWN] or keys[pygame.K_s]:
+                current_player["y"] = current_player["y"]+10
+                direction = "DOWN"
+                moved = True
+            if moved:
+                data = "move "+ str(current_player["x"]) + " " + str(current_player["y"])+" "+direction
 
             players,game_time = server.send(data)
             
@@ -89,8 +106,8 @@ def main(adm,name):
             
             #create all the sprites for the players
             for plr in players:
-                print(plr)
-                plr_sprite = Player(players[plr]["x"],players[plr]["y"],players[plr]["characterType"],players[plr]["name"])
+                # print(plr)
+                plr_sprite = Player(players[plr]["x"],players[plr]["y"],players[plr]["characterType"],players[plr]["name"],players[plr]["direction_facing"])
                 players_group.add(plr_sprite)
 
             screen.blit(text,textRect)

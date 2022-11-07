@@ -42,7 +42,8 @@ def addNewPlayerToServer(data,uid):
         "score": 0,
         "characterType":0,
         "x":x,
-        "y":y
+        "y":y,
+        "direction_facing":"RIGHT"
         
     }
 
@@ -74,9 +75,10 @@ def clientHandler(conn,unique_id):
             if cmnd.split()[0]=="move":
                 players[uid]["x"]= int(cmnd.split()[1])
                 players[uid]["y"]= int(cmnd.split()[2])
+                players[uid]["direction_facing"] = cmnd.split()[3]
             # print(players[uid])
             replyToCmnd = (players,s_game_time)
-            print(replyToCmnd)
+            # print(replyToCmnd)
             conn.send(pickle.dumps(replyToCmnd))
         except Exception as e:
             print(e)
