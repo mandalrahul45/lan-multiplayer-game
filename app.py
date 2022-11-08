@@ -26,25 +26,28 @@ def drawPlayers():
     pass
 
 class Tile(pygame.sprite.Sprite):
-    def __init__(self,pos,surf,groups):
+    def __init__(self,size,pos,surf,rttn,groups):
         super().__init__(groups)
         self.image = surf
-        # self.image = pygame.transform.scale(self.image,(100,100))
+        self.image = pygame.transform.scale(self.image,size)
+        self.image = pygame.transform.rotate(self.image,rttn)
         self.rect = self.image.get_rect(topleft = pos)
 
-tmx_data = load_pygame('Tiled 2\\\\newmap.tmx')
+tmx_data = load_pygame('hello\\newmap.tmx')
 camera_group = CameraGroup(screen)
 
 for layer in tmx_data.visible_layers:
     if hasattr(layer,'data'):
         for x,y,surf in layer.tiles():
             pos = (x * 128, y * 128)
-            Tile(pos = pos, surf = surf, groups = camera_group)
- 
+            Tile(size=(128,128),pos = pos, surf = surf,rttn= 0,groups = camera_group)
 for obj in tmx_data.objects:
+    # print(dir(obj.image))
+
     pos = obj.x,obj.y
-    if obj.type in ('Building', 'Vegetation'):
-        Tile(pos = pos, surf = obj.image, groups = camera_group)
+    
+    # if obj.type in ('Building', 'Vegetation'):
+    Tile(size=(obj.width,obj.height),pos = pos, surf = obj.image,rttn = obj.rotation, groups = camera_group)
 
 
 def main(adm,name):
@@ -56,13 +59,16 @@ def main(adm,name):
     reply_data = server.send("get")
     players = reply_data[0]
     current_player = players[uid]
-
+    direction_vector = pygame.math.Vector2()
+    position_vector = pygame.math.Vector2(current_player["x"],current_player["y"])
     clock = pygame.time.Clock()
 
     game_state = True
     while game_state:
         clock.tick(30)
         current_player = players[uid]
+        position_vector = pygame.math.Vector2(current_player["x"],current_player["y"])
+
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -76,27 +82,36 @@ def main(adm,name):
             direction = ""
             moved = False
             if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
-                current_player["x"] = current_player["x"]+10
-                direction = "RIGHT"
+                direction_vector.x = 1
+                # current_player["x"] = current_player["x"]+10
+                direction = "RIGHT" 
                 moved = True
 
-            if keys[pygame.K_LEFT] or keys[pygame.K_a]:
-                current_player["x"] = current_player["x"]-10
+            elif keys[pygame.K_LEFT] or keys[pygame.K_a]:
+                direction_vector.x = -1
+                # current_player["x"] = current_player["x"]-10
                 direction = "LEFT"
                 moved = True
+            else:
+                direction_vector.x=0
 
             if keys[pygame.K_UP] or keys[pygame.K_w]:
-                current_player["y"] = current_player["y"]-10
+                direction_vector.y = -1
+                # current_player["y"] = current_player["y"]-10
                 direction = "UP"
                 moved = True
 
-            if keys[pygame.K_DOWN] or keys[pygame.K_s]:
-                current_player["y"] = current_player["y"]+10
+            elif keys[pygame.K_DOWN] or keys[pygame.K_s]:
+                direction_vector.y = 1
+                # current_player["y"] = current_player["y"]+10
                 direction = "DOWN"
                 moved = True
+            else:
+                direction_vector.y=0
             if moved:
-                data = "move "+ str(current_player["x"]) + " " + str(current_player["y"])+" "+direction
-
+                position_vector = position_vector+(direction_vector*10)
+                data = "move "+ str(int(position_vector.x)) + " " + str(int(position_vector.y))+" "+direction
+            # print(direction_vector,position_vector)
             players,game_time = server.send(data)
             
 
