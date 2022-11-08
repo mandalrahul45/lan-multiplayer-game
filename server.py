@@ -10,7 +10,8 @@ players={}
 s_game_time = "Waiting to start"
 start_time=0
 game_state = "NOT RUNNING"
-
+grenades={}
+grenade_count = 1
 
 ROUND_TIME_LIMIT = 15*60
 
@@ -43,11 +44,30 @@ def addNewPlayerToServer(data,uid):
         "characterType":0,
         "x":x,
         "y":y,
-        "direction_facing":"RIGHT"
+        "direction_facing":"RIGHT",
+        "health":100,
+        "grenade_count":3
         
     }
 
-
+def addNewGrenadeInfo(guid,origin_x,origin_y,dest_x,dest_y,pos_x,pos_y,state,add_vec_x,add_vec_y,deployer_id):
+    global grenade_count
+    grenade_count+=1
+    grenades[guid]={
+        "guid":guid,
+        "origin_x":origin_x,
+        "origin_y":origin_y,
+        "dest_x":dest_x,
+        "dest_y":dest_y,
+        "pos_x":pos_x,
+        "pos_y":pos_y,
+        "state":state,
+        "add_vec_x":add_vec_x,
+        "add_vec_y":add_vec_y,
+        "deployer_id":deployer_id,
+    }
+def greandeCollidedWith(pid):
+    pass
 def clientHandler(conn,unique_id):
 
     global connected_clients,players,s_game_time,game_state
@@ -75,8 +95,12 @@ def clientHandler(conn,unique_id):
                 players[uid]["x"]= int(cmnd.split()[1])
                 players[uid]["y"]= int(cmnd.split()[2])
                 players[uid]["direction_facing"] = cmnd.split()[3]
+
+            elif cmnd.split()[0]=="addGrenade":
+                cm_sep = cmnd.split()
+                addNewGrenadeInfo(guid=(str(uid)+str(grenade_count)),origin_x=cm_sep[1],origin_y=cm_sep[2],dest_x=cm_sep[3],dest_y=cm_sep[4],pos_x=cm_sep[5],pos_y=cm_sep[6],state=cm_sep[7],add_vec_x=cm_sep[8],add_vec_y=cm_sep[9],deployer_id= uid)
             # print(players[uid])
-            replyToCmnd = (players,s_game_time)
+            replyToCmnd = (players,s_game_time,grenades)
             # print(replyToCmnd)
             conn.send(pickle.dumps(replyToCmnd))
         except Exception as e:
