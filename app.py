@@ -1,5 +1,6 @@
 import datetime
-
+import tkinter
+from tkinter import simpledialog
 from client import Connection
 import pygame
 from player import Player
@@ -10,6 +11,14 @@ pygame.init()
 #inititlized the screen and set caption:
 WIDTH =1280
 HEIGHT=768
+
+# MN = tkinter.Tk()
+# MN.withdraw()
+# NAME_ENTERED = simpledialog.askstring(title="Name?",
+#                                   prompt="What's your Name?:")
+# ADM_NO_ENTERED = simpledialog.askstring(title="Adm no>?",
+#                                   prompt="What's your Admission No.?:")
+
 screen = pygame.display.set_mode((WIDTH,HEIGHT))
 pygame.display.set_caption("LAN MULTIPLAYER") 
 
@@ -32,15 +41,20 @@ class Tile(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(self.image,size)
         self.image = pygame.transform.rotate(self.image,rttn)
         self.rect = self.image.get_rect(topleft = pos)
-
+        self.hitbox = self.rect.copy()
 tmx_data = load_pygame('hello\\newmap.tmx')
 camera_group = CameraGroup(screen)
+collision_group = pygame.sprite.Group()
+
 
 for layer in tmx_data.visible_layers:
     if hasattr(layer,'data'):
         for x,y,surf in layer.tiles():
             pos = (x * 128, y * 128)
-            Tile(size=(128,128),pos = pos, surf = surf,rttn= 0,groups = camera_group)
+            if layer.name=="wall":
+                Tile(size=(128,128),pos = pos, surf = surf,rttn= 0,groups = [camera_group,collision_group])
+            else:
+                Tile(size=(128,128),pos = pos, surf = surf,rttn= 0,groups = camera_group)
 for obj in tmx_data.objects:
     # print(dir(obj.image))
 
@@ -49,6 +63,24 @@ for obj in tmx_data.objects:
     # if obj.type in ('Building', 'Vegetation'):
     Tile(size=(obj.width,obj.height),pos = pos, surf = obj.image,rttn = obj.rotation, groups = camera_group)
 
+
+def collision(position_vec,direction):
+    
+    orRect = pygame.Rect(position_vec.x-64,position_vec.y-64,128,128)
+    plr_hitbox = pygame.Rect(position_vec.x-64,position_vec.y-64,128,128)
+    for sprite in collision_group.sprites():
+        if hasattr(sprite,"hitbox"):
+            if sprite.hitbox.colliderect(plr_hitbox):
+                if direction=="RIGHT":
+                    plr_hitbox.right = sprite.hitbox.left
+                elif direction =="LEFT":
+                    plr_hitbox.left = sprite.hitbox.right
+
+                elif direction=="UP":
+                    plr_hitbox.top = sprite.hitbox.bottom
+                elif direction =="DOWN":
+                    plr_hitbox.bottom = sprite.hitbox.top
+    return(pygame.math.Vector2(plr_hitbox.centerx,plr_hitbox.centery))
 
 def main(adm,name):
     global players,game_time
@@ -83,33 +115,40 @@ def main(adm,name):
             moved = False
             if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
                 direction_vector.x = 1
+                direction_vector.y = 0
+
                 # current_player["x"] = current_player["x"]+10
                 direction = "RIGHT" 
                 moved = True
 
             elif keys[pygame.K_LEFT] or keys[pygame.K_a]:
                 direction_vector.x = -1
+                direction_vector.y = 0
                 # current_player["x"] = current_player["x"]-10
                 direction = "LEFT"
                 moved = True
-            else:
-                direction_vector.x=0
+            # else:
+            #     direction_vector.x=0
 
-            if keys[pygame.K_UP] or keys[pygame.K_w]:
+            elif keys[pygame.K_UP] or keys[pygame.K_w]:
                 direction_vector.y = -1
+                direction_vector.x = 0
                 # current_player["y"] = current_player["y"]-10
                 direction = "UP"
                 moved = True
 
             elif keys[pygame.K_DOWN] or keys[pygame.K_s]:
                 direction_vector.y = 1
+                direction_vector.x = 0
                 # current_player["y"] = current_player["y"]+10
                 direction = "DOWN"
                 moved = True
             else:
+                direction_vector.x=0
                 direction_vector.y=0
             if moved:
                 position_vector = position_vector+(direction_vector*10)
+                position_vector = collision(position_vector,direction)
                 data = "move "+ str(int(position_vector.x)) + " " + str(int(position_vector.y))+" "+direction
             # print(direction_vector,position_vector)
             players,game_time = server.send(data)
@@ -138,11 +177,13 @@ def main(adm,name):
             camera_group.remove(all_playersList_toRemove)
             camera_group.update()
             screen.blit(time_text,textRect)
-
             pygame.display.update()
 
     server.disconnect()
     pygame.quit()
     quit()
+
+
     
-main(123,"Rahul")
+# main(ADM_NO_ENTERED,NAME_ENTERED)
+main(123,"rahul")

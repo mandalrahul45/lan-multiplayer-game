@@ -13,4 +13,8 @@ class Player(pygame.sprite.Sprite):
         self.image = pygame.transform.rotate(self.image, rotaion_values[direction_facing])
         self.rect = self.image.get_rect(center =(pos_x,pos_y))
 
+        self.hitbox = self.rect.copy()
+        
+    
+
     
