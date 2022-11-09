@@ -88,6 +88,50 @@ def collision(position_vec,direction):
                     plr_hitbox.bottom = sprite.hitbox.top
     return(pygame.math.Vector2(plr_hitbox.centerx,plr_hitbox.centery))
 
+def display_leaderboard():
+    leaderboard_list = []
+    for plr in players:
+        leaderboard_list.append([players[plr]["name"], int(players[plr]["score"]) ])
+        leaderboard_list.sort(key=lambda n:n[1],reverse=True)
+
+    su = pygame.Surface((260,110+5))
+    su.set_alpha(55)
+    su.fill("black")
+    screen.blit(su,(WIDTH-265,5))
+
+    font = pygame.font.Font("ui\Silkscreen-Regular.ttf",20)
+    text = font.render("LEADERBOARD:", True,"black")
+    textRect = text.get_rect(topleft=(WIDTH-205-60,10))
+    screen.blit(text,textRect)
+
+    
+
+    
+    font = pygame.font.Font("ui\JetBrainsMono-Regular.ttf",25)
+    if len(leaderboard_list)>0:
+        medal_image = pygame.image.load("ui\\gold-medal.png")
+        screen.blit(medal_image,(WIDTH-205-60,35))
+
+        text = font.render((leaderboard_list[0][0])+" "+str(leaderboard_list[0][1]), True,"black")
+        textRect = text.get_rect(topleft=(WIDTH-205-60+32,35))
+        screen.blit(text,textRect)
+    
+    font = pygame.font.Font("ui\JetBrainsMono-Regular.ttf",20)
+    if len(leaderboard_list)>1:
+        medal_image = pygame.image.load("ui\\silver-medal.png")
+        screen.blit(medal_image,(WIDTH-205-60+5,35+32))
+
+        text = font.render((leaderboard_list[1][0])+" "+str(leaderboard_list[1][1]), True,"black")
+        textRect = text.get_rect(topleft=(WIDTH-205-60+33,35+28))
+        screen.blit(text,textRect)
+    if len(leaderboard_list)>2:
+        medal_image = pygame.image.load("ui\\bronze-medal.png")
+        screen.blit(medal_image,(WIDTH-205-60+5,35+32+28))
+
+        text = font.render((leaderboard_list[2][0])+" "+str(leaderboard_list[2][1]), True,"black")
+        textRect = text.get_rect(topleft=(WIDTH-205-60+33,35+28+24))
+        screen.blit(text,textRect)
+
 def main(adm,name):
     global players,game_time,grenades
     print(1)
@@ -164,7 +208,7 @@ def main(adm,name):
             players,game_time = server.send(data)
             
 
-            font = pygame.font.SysFont("arial",30)
+            font = pygame.font.Font("ui\Silkscreen-Regular.ttf",30)
             time_text = font.render(changeTimeFormat(int(game_time)), True,"black")
             textRect = time_text.get_rect()
             textRect.topleft = (8, 40)
@@ -195,15 +239,16 @@ def main(adm,name):
                     gyo-=50
                 elif direction =="DOWN":
                     gyo+=50
-                datag ="cmd adGd "+str(gxo)+" "+str(gyo)+" "+direction
+                datag ="cmd adGd "+str(gxo)+" "+str(gyo)+" "+players[uid]["direction_facing"] 
             print(5)
             cmd_from_server = server.send(datag)
-            
             print(cmd_from_server)
             if cmd_from_server !="noCommand":
                 cmdlist = cmd_from_server.split()
                 if cmdlist[0]=="dgd":
-                    # gnds_sprite = Grenade(int(cmdlist[1]),int(cmdlist[2]),cmdlist[3],int(cmdlist[4]))
+                    gnds_sprite = Grenade(int(cmdlist[1]),int(cmdlist[2]),cmdlist[3],int(cmdlist[4]))
+                    camera_group.add(gnds_sprite)
+
                     print("sprite created")
             
             # all_grenadesSprites_toRemove=[]
@@ -226,7 +271,7 @@ def main(adm,name):
             camera_group.draw_group_sprites(current_player_sprite)
             camera_group.remove(all_playersList_toRemove)
             # camera_group.remove(all_grenadesSprites_toRemove)
-            camera_group.update()
+            camera_group.update(game_time)
             
 
             clock_image = pygame.image.load("ui\\clock.png")
@@ -262,6 +307,7 @@ def main(adm,name):
             textRect = gc.get_rect()
             textRect.topleft = (43, 79)
             screen.blit(gc,textRect)
+            display_leaderboard()
             pygame.display.update()
 
     server.disconnect()
@@ -271,4 +317,4 @@ def main(adm,name):
 
     
 # main(ADM_NO_ENTERED,NAME_ENTERED)
-main(123,"rahul")
+main(123,"Rahul Mandal")
