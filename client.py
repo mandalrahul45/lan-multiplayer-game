@@ -12,12 +12,17 @@ class Connection:
 
 
     def connect(self, adm,name):
-
+        print("in c 1")
         self.client_socket.connect((self.host,self.port))
+        print("in c 2")
+
         self.client_socket.send(pickle.dumps((adm,name)))
+        print("in c 3")
 
         #raw_data receives a unique id from the server
         raw_data = self.client_socket.recv(8)
+        print("in c 4")
+
         return int(raw_data.decode("utf-8"))
 
     def send(self,data,serialize=False):
