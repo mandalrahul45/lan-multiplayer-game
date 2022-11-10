@@ -106,6 +106,7 @@ def clientHandler(conn,unique_id):
                 else:
                     replyToCmnd = "noCommand"
             elif cmnd.split()[0]=="tkdmg":
+                players[int(cmnd.split()[1])]["score"]+=50
                 players[uid]["health"]-=10
                 if players[uid]["health"]<=0:
                     replyToCmnd = "dead"

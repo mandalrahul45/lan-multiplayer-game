@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1 (c68e22c387, 2021-05-23)"
+   sodipodi:docname="scorecard.svg"
+   inkscape:export-filename="D:\application files\vscode\lan multiplayer game\ui\score_card.png"
+   inkscape:export-xdpi="28.656324"
+   inkscape:export-ydpi="28.656324"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#111111"
+     borderopacity="1"
+     inkscape:pageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="1.4289282"
+     inkscape:cx="339.76515"
+     inkscape:cy="434.24156"
+     inkscape:window-width="1920"
+     inkscape:window-height="991"
+     inkscape:window-x="-9"
+     inkscape:window-y="219"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="g15691" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g15691">
+      <g
+         id="g15671" />
+      <g
+         id="g1955"
+         inkscape:export-filename="D:\application files\vscode\lan multiplayer game\ui\score_card.png"
+         inkscape:export-xdpi="28.656324"
+         inkscape:export-ydpi="28.656324">
+        <g
+           id="g1234"
+           transform="matrix(1.4006939,0,0,1,-16.191598,3.6660224)"
+           style="fill:#4d4d4d;fill-opacity:0.6">
+          <rect
+             style="fill:#4d4d4d;fill-opacity:0.6;fill-rule:evenodd;stroke-width:0.264583"
+             id="rect1230"
+             width="44.4389"
+             height="37.217579"
+             x="51.845383"
+             y="92.766212" />
+          <rect
+             style="fill:#4d4d4d;fill-opacity:0.6;fill-rule:evenodd;stroke-width:0.264583"
+             id="rect1232"
+             width="44.4389"
+             height="37.217579"
+             x="96.284286"
+             y="92.766212" />
+        </g>
+        <path
+           style="fill:#333333;fill-opacity:0.6;stroke:none;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           d="m 62.649027,142.32766 -31.292392,0.18517 4.999376,-18.14589 -5.184539,-18.51621 31.107231,0.18516 z"
+           id="path848" />
+        <path
+           style="fill:#8cbb41;fill-opacity:1;stroke:none;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           d="m 58.91754,138.46524 -31.292392,0.18517 4.999376,-18.14589 -5.184539,-18.51621 31.107231,0.18516 z"
+           id="path9010" />
+        <path
+           style="fill:#333333;fill-opacity:0.6;stroke:none;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           d="m 173.23568,141.80363 31.2924,0.18517 -4.99938,-18.14589 5.18454,-18.51621 -31.10723,0.18516 z"
+           id="path1228" />
+        <path
+           style="fill:#01ab5d;fill-opacity:1;stroke:none;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           d="m 168.5333,138.46493 31.2924,0.18517 -4.99938,-18.14589 5.18454,-18.51621 -31.10723,0.18516 z"
+           id="path11646" />
+        <g
+           id="g13452"
+           transform="matrix(1.4006939,0,0,1,-20.774126,0)">
+          <rect
+             style="fill:#bbe23a;fill-opacity:1;fill-rule:evenodd;stroke-width:0.264583"
+             id="rect922"
+             width="44.4389"
+             height="37.217579"
+             x="51.845383"
+             y="92.766212" />
+          <rect
+             style="fill:#8cbb41;fill-opacity:1;fill-rule:evenodd;stroke-width:0.264583"
+             id="rect4516"
+             width="44.4389"
+             height="37.217579"
+             x="96.284286"
+             y="92.766212" />
+        </g>
+        <rect
+           style="fill:#2ca02c;fill-rule:evenodd;stroke-width:0.292693"
+           id="rect15875"
+           width="99.58802"
+           height="18.259674"
+           x="64.551338"
+           y="101.74459" />
+        <g
+           id="g15664"
+           transform="matrix(0.4839497,0,0,0.4839497,40.251539,83.126866)">
+          <path
+             style="fill:#f57e01;fill-opacity:1;stroke:none;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+             d="m 50.080484,41.439147 6.808327,13.551188 15.318737,2.356729 -10.867139,10.736209 2.684053,15.253271 -13.813047,-7.135651 z"
+             id="path13487" />
+          <path
+             style="fill:#ff9e01;fill-opacity:1;stroke:none;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+             d="M 50.080484,41.439147 43.272157,54.990335 27.95342,57.347064 38.820559,68.083273 36.136506,83.336544 50.211415,76.200893 Z"
+             id="path14251"
+             sodipodi:nodetypes="ccccccc" />
+        </g>
+        <g
+           id="g15677"
+           transform="matrix(0.4839497,0,0,0.4839497,139.83956,83.126866)">
+          <path
+             style="fill:#f57e01;fill-opacity:1;stroke:none;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+             d="m 50.080484,41.439147 6.808327,13.551188 15.318737,2.356729 -10.867139,10.736209 2.684053,15.253271 -13.813047,-7.135651 z"
+             id="path15673" />
+          <path
+             style="fill:#ff9e01;fill-opacity:1;stroke:none;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+             d="M 50.080484,41.439147 43.272157,54.990335 27.95342,57.347064 38.820559,68.083273 36.136506,83.336544 50.211415,76.200893 Z"
+             id="path15675"
+             sodipodi:nodetypes="ccccccc" />
+        </g>
+      </g>
+      <text
+         xml:space="preserve"
+         style="font-size:10.3519px;line-height:1.25;font-family:'JetBrains Mono';-inkscape-font-specification:'JetBrains Mono';stroke-width:0.258799"
+         x="95.693542"
+         y="103.2574"
+         id="text1151"
+         transform="scale(1.0223484,0.97814013)"><tspan
+           sodipodi:role="line"
+           id="tspan1149"
+           style="stroke-width:0.258799"
+           x="95.693542"
+           y="103.2574">SCORE</tspan></text>
+    </g>
+  </g>
+</svg>

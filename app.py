@@ -25,7 +25,7 @@ IP_ENTERED = simpledialog.askstring(title="SERVER IP?",
 
 screen = pygame.display.set_mode((WIDTH,HEIGHT))
 pygame.display.set_caption("LAN MULTIPLAYER") 
-pygame.display.set_icon(pygame.image.load("ui\icon.png"))
+pygame.display.set_icon(pygame.image.load("ui\\icon.png"))
 
 players={}
 game_time=0
@@ -89,7 +89,7 @@ def collision(position_vec,direction):
                     plr_hitbox.bottom = sprite.hitbox.top
     return(pygame.math.Vector2(plr_hitbox.centerx,plr_hitbox.centery))
 
-def display_leaderboard():
+def display_leaderboard(uid):
     leaderboard_list = []
     for plr in players:
         leaderboard_list.append([players[plr]["name"], int(players[plr]["score"]) ])
@@ -100,7 +100,7 @@ def display_leaderboard():
     su.fill("black")
     screen.blit(su,(WIDTH-265,5))
 
-    font = pygame.font.Font("ui\Silkscreen-Regular.ttf",20)
+    font = pygame.font.Font("ui\\Silkscreen-Regular.ttf",20)
     text = font.render("LEADERBOARD:", True,"black")
     textRect = text.get_rect(topleft=(WIDTH-205-60,10))
     screen.blit(text,textRect)
@@ -108,7 +108,7 @@ def display_leaderboard():
     
 
     
-    font = pygame.font.Font("ui\JetBrainsMono-Regular.ttf",25)
+    font = pygame.font.Font("ui\\JetBrainsMono-Regular.ttf",25)
     if len(leaderboard_list)>0:
         medal_image = pygame.image.load("ui\\gold-medal.png")
         screen.blit(medal_image,(WIDTH-205-60,35))
@@ -117,7 +117,7 @@ def display_leaderboard():
         textRect = text.get_rect(topleft=(WIDTH-205-60+32,35))
         screen.blit(text,textRect)
     
-    font = pygame.font.Font("ui\JetBrainsMono-Regular.ttf",20)
+    font = pygame.font.Font("ui\\JetBrainsMono-Regular.ttf",20)
     if len(leaderboard_list)>1:
         medal_image = pygame.image.load("ui\\silver-medal.png")
         screen.blit(medal_image,(WIDTH-205-60+5,35+32))
@@ -133,6 +133,15 @@ def display_leaderboard():
         textRect = text.get_rect(topleft=(WIDTH-205-60+33,35+28+24))
         screen.blit(text,textRect)
 
+    #score_card
+    scoreCard = pygame.image.load("ui\\score_card.png")
+    screen.blit(scoreCard,(WIDTH//2 - 100,10))
+
+    font = pygame.font.Font("ui\\Silkscreen-Regular.ttf",30)
+
+    text = font.render(str(players[uid]["score"]), True,"black")
+    textRect = text.get_rect(topleft=((WIDTH//2 - 100)+65,10))
+    screen.blit(text,textRect)
 
 def collidedWithGrenade(server,allPlrSprite,myPlayerSprite):
     global grenades
@@ -144,7 +153,7 @@ def collidedWithGrenade(server,allPlrSprite,myPlayerSprite):
                 gds.kill()
                 if plrSprite==myPlayerSprite:
                     #notify server of damage
-                    return(server.send("tkdmg"))
+                    return(server.send("tkdmg "+str(gds.deployer)))
                     
                 
 def main(adm,name):
@@ -229,7 +238,7 @@ def main(adm,name):
             players,game_time = server.send(data)
             
 
-            font = pygame.font.Font("ui\Silkscreen-Regular.ttf",30)
+            font = pygame.font.Font("ui\\Silkscreen-Regular.ttf",30)
             time_text = font.render(changeTimeFormat(int(game_time)), True,"black")
             textRect = time_text.get_rect()
             textRect.topleft = (8, 40)
@@ -315,7 +324,7 @@ def main(adm,name):
             screen.blit(heart_image,(8,8))
 
             # gd = pygame.image.load("ui\grenade.png")
-            gd_small = pygame.image.load("ui\grenade small.png")
+            gd_small = pygame.image.load("ui\\grenade small.png")
             
             hbar= pygame.Surface((150,10))
             hbar.fill("white")
@@ -332,8 +341,9 @@ def main(adm,name):
             textRect = gc.get_rect()
             textRect.topleft = (43, 79)
             screen.blit(gc,textRect)
-            display_leaderboard()
+            display_leaderboard(uid)
             pygame.display.update()
+    print("GAME ENDED")
 
     server.disconnect()
     pygame.quit()
