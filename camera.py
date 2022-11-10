@@ -1,5 +1,6 @@
 import pygame
-
+import player
+import grenade
 class CameraGroup(pygame.sprite.Group):
     def __init__(self,screen):
         super().__init__()
@@ -16,12 +17,16 @@ class CameraGroup(pygame.sprite.Group):
         self.camera_target(target)
         for sprite in self.sprites():
             offset_pos = sprite.rect.topleft - self.offset_vector
-
-            # pygame.draw.rect(self.screen, "red",,  2)
             self.screen.blit(sprite.image,offset_pos)
-            # if hasattr(sprite,"hitbox"):
-            #     rec =  sprite.hitbox.copy()
-            #     rec.centerx = rec.centerx-self.offset_vector.x
-            #     rec.centery = rec.centery-self.offset_vector.y
 
-            #     pygame.draw.rect(self.screen, "red",rec,  2)
+            if isinstance(sprite,player.Player):
+                offset_pos = sprite.textRect.topleft - self.offset_vector
+                self.screen.blit(sprite.text,offset_pos)
+            if isinstance(sprite,grenade.Grenade) or isinstance(sprite,player.Player):
+                # pygame.draw.rect(self.screen, "red",,  2)
+                if hasattr(sprite,"hitbox"):
+                    rec =  sprite.hitbox.copy()
+                    rec.centerx = rec.centerx-self.offset_vector.x
+                    rec.centery = rec.centery-self.offset_vector.y
+
+                    pygame.draw.rect(self.screen, "red",rec,  2)

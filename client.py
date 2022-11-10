@@ -45,4 +45,5 @@ class Connection:
             print(e)
     
     def disconnect(self):
+        self.client_socket.close("closeConn")
         self.client_socket.close()

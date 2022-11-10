@@ -87,7 +87,7 @@ def clientHandler(conn,unique_id):
             #when a player requested to add a grenade
             elif cmnd.split()[0]=="cmd":
                 if cmnd.split()[1]=="adGd":
-                    rtc = "dgd "+cmnd.split()[2]+" "+cmnd.split()[3]+" "+cmnd.split()[4]+" "+str(s_game_time+1)
+                    rtc = "dgd "+cmnd.split()[2]+" "+cmnd.split()[3]+" "+cmnd.split()[4]+" "+str(uid)
                     print(rtc)
                     for plr in players:
                         to_send_gnd_cmd[plr]={"msg":rtc}
@@ -105,6 +105,19 @@ def clientHandler(conn,unique_id):
                         replyToCmnd = "noCommand"
                 else:
                     replyToCmnd = "noCommand"
+            elif cmnd.split()[0]=="tkdmg":
+                players[uid]["health"]-=10
+                if players[uid]["health"]<=0:
+                    replyToCmnd = "dead"
+                    
+                else:
+                    replyToCmnd ="alive"
+            elif cmnd.split()[0]=="closeConn":
+                print("[DISCONNECTED]",name,"disconnected from the server")
+                connected_clients-=1
+                del players[uid]
+                conn.close()
+                break
             else:
                 replyToCmnd = (players,s_game_time)
             # print(replyToCmnd)

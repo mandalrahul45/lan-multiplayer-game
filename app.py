@@ -7,6 +7,7 @@ import pygame
 from player import Player
 from pytmx.util_pygame import load_pygame
 from camera import CameraGroup
+import time
 pygame.init()
 
 #inititlized the screen and set caption:
@@ -28,7 +29,7 @@ pygame.display.set_icon(pygame.image.load("ui\icon.png"))
 
 players={}
 game_time=0
-grenades={}
+grenades=pygame.sprite.Group()
 
 def changeTimeFormat(secs):
 	mins = str(secs // 60)
@@ -132,6 +133,20 @@ def display_leaderboard():
         textRect = text.get_rect(topleft=(WIDTH-205-60+33,35+28+24))
         screen.blit(text,textRect)
 
+
+def collidedWithGrenade(server,allPlrSprite,myPlayerSprite):
+    global grenades
+    for plrSprite in allPlrSprite:
+        for gds in grenades:
+            if int(plrSprite.pid)!=int(gds.deployer )and plrSprite.hitbox.colliderect(gds):
+                # print("greande collided")
+                # print(gds.deployer,plrSprite.pid)
+                gds.kill()
+                if plrSprite==myPlayerSprite:
+                    #notify server of damage
+                    return(server.send("tkdmg"))
+                    
+                
 def main(adm,name):
     global players,game_time,grenades
     print(1)
@@ -148,8 +163,14 @@ def main(adm,name):
     clock = pygame.time.Clock()
 
     game_state = True
+    ptime = time.time()
+    prp = players[uid]["x"]
+    direction = "RIGHT"
+
     while game_state:
         clock.tick(30)
+        dt = time.time()-ptime
+        ptime = time.time()
         current_player = players[uid]
         position_vector = pygame.math.Vector2(current_player["x"],current_player["y"])
 
@@ -163,7 +184,6 @@ def main(adm,name):
             data ="get"
             keys = pygame.key.get_pressed()
 
-            direction = "RIGHT"
             moved = False
             if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
                 direction_vector.x = 1
@@ -201,7 +221,8 @@ def main(adm,name):
 
             
             if moved:
-                position_vector = position_vector+(direction_vector*25)
+                print(round(dt*900))
+                position_vector = position_vector+(direction_vector*round(dt*950))
                 position_vector = collision(position_vector,direction)
                 data = "move "+ str(int(position_vector.x)) + " " + str(int(position_vector.y))+" "+direction
             # print(direction_vector,position_vector)
@@ -218,7 +239,7 @@ def main(adm,name):
             #create all the sprites for the players
             for plr in players:
                 # print(plr)
-                plr_sprite = Player(players[plr]["x"],players[plr]["y"],players[plr]["characterType"],players[plr]["name"],players[plr]["direction_facing"])
+                plr_sprite = Player(players[plr]["x"],players[plr]["y"],players[plr]["characterType"],players[plr]["name"],players[plr]["direction_facing"],True if int(plr)==int(uid) else False,int(plr))
 
                 if plr==uid:
                     current_player_sprite = plr_sprite
@@ -232,23 +253,24 @@ def main(adm,name):
                 gxo = players[uid]["x"]
                 gyo = players[uid]["y"]
                 if direction=="RIGHT":
-                    gxo+=50
+                    gxo+=30
                 elif direction =="LEFT":
-                    gxo-=50
+                    gxo-=30
                 elif direction=="UP":
-                    gyo-=50
+                    gyo-=30
                 elif direction =="DOWN":
-                    gyo+=50
+                    gyo+=30
                 datag ="cmd adGd "+str(gxo)+" "+str(gyo)+" "+players[uid]["direction_facing"] 
             print(5)
             cmd_from_server = server.send(datag)
             print(cmd_from_server)
+
             if cmd_from_server !="noCommand":
                 cmdlist = cmd_from_server.split()
                 if cmdlist[0]=="dgd":
-                    gnds_sprite = Grenade(int(cmdlist[1]),int(cmdlist[2]),cmdlist[3],int(cmdlist[4]))
+                    gnds_sprite = Grenade(int(cmdlist[1]),int(cmdlist[2]),cmdlist[3],cmdlist[4])
                     camera_group.add(gnds_sprite)
-
+                    grenades.add(gnds_sprite)
                     print("sprite created")
             
             # all_grenadesSprites_toRemove=[]
@@ -267,11 +289,14 @@ def main(adm,name):
             #     camera_group.add(gnds_sprite)
             
 
-
+            health_state = collidedWithGrenade(server,all_playersList_toRemove,current_player_sprite)
+            # print(health_state)
+            if health_state =="dead":
+                break
             camera_group.draw_group_sprites(current_player_sprite)
             camera_group.remove(all_playersList_toRemove)
             # camera_group.remove(all_grenadesSprites_toRemove)
-            camera_group.update(game_time)
+            camera_group.update(dt)
             
 
             clock_image = pygame.image.load("ui\\clock.png")
@@ -289,7 +314,7 @@ def main(adm,name):
             # heart_image = pygame.transform.scale(heart_image,(30,30))
             screen.blit(heart_image,(8,8))
 
-            gd = pygame.image.load("ui\grenade.png")
+            # gd = pygame.image.load("ui\grenade.png")
             gd_small = pygame.image.load("ui\grenade small.png")
             
             hbar= pygame.Surface((150,10))
