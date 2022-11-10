@@ -14,14 +14,14 @@ pygame.init()
 WIDTH =1280
 HEIGHT=768
 
-# MN = tkinter.Tk()
-# MN.withdraw()
+MN = tkinter.Tk()
+MN.withdraw()
 # NAME_ENTERED = simpledialog.askstring(title="Name?",
 #                                   prompt="What's your Name?:")
 # ADM_NO_ENTERED = simpledialog.askstring(title="Adm no>?",
 #                                   prompt="What's your Admission No.?:")
-# IP_ENTERED = simpledialog.askstring(title="SERVER IP?",
-#                                   prompt="ENTER SERVER IP?:")
+IP_ENTERED = simpledialog.askstring(title="SERVER IP?",
+                                  prompt="ENTER SERVER IP?:")
 
 screen = pygame.display.set_mode((WIDTH,HEIGHT))
 pygame.display.set_caption("LAN MULTIPLAYER") 
@@ -49,7 +49,7 @@ class Tile(pygame.sprite.Sprite):
         self.image = pygame.transform.rotate(self.image,rttn)
         self.rect = self.image.get_rect(topleft = pos)
         self.hitbox = self.rect.copy()
-tmx_data = load_pygame('hello\\newmap.tmx')
+tmx_data = load_pygame('Main Base 1\\Main map.tmx')
 camera_group = CameraGroup(screen)
 collision_group = pygame.sprite.Group()
 
@@ -58,17 +58,17 @@ for layer in tmx_data.visible_layers:
     if hasattr(layer,'data'):
         for x,y,surf in layer.tiles():
             pos = (x * 128, y * 128)
-            if layer.name=="wall":
+            if layer.name=="Walls":
                 Tile(size=(128,128),pos = pos, surf = surf,rttn= 0,groups = [camera_group,collision_group])
             else:
                 Tile(size=(128,128),pos = pos, surf = surf,rttn= 0,groups = camera_group)
-for obj in tmx_data.objects:
-    # print(dir(obj.image))
+# for obj in tmx_data.objects:
+#     # print(dir(obj.image))
 
-    pos = obj.x,obj.y
+#     pos = obj.x,obj.y
     
-    # if obj.type in ('Building', 'Vegetation'):
-    Tile(size=(obj.width,obj.height),pos = pos, surf = obj.image,rttn = obj.rotation, groups = camera_group)
+#     # if obj.type in ('Building', 'Vegetation'):
+#     Tile(size=(obj.width,obj.height),pos = pos, surf = obj.image,rttn = obj.rotation, groups = camera_group)
 
 
 def collision(position_vec,direction):
@@ -152,7 +152,7 @@ def main(adm,name):
     print(1)
     server = Connection()
     print(2)
-    uid = server.connect(adm,name)
+    uid = server.connect(adm,name,IP_ENTERED)
     print(3)
     reply_data = server.send("get")
     print(4)

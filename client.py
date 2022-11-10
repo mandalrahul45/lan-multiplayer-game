@@ -6,12 +6,13 @@ class Connection:
     def __init__(self):
         self.client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
         self.port = 9999
-        self.host = "127.0.0.1"
+        self.host = "192.168.1.5"
 
     # TO DO: Create another parameterized constructor 
 
 
-    def connect(self, adm,name):
+    def connect(self, adm,name,IP_ENTERED):
+        self.host = IP_ENTERED
         print("in c 1")
         self.client_socket.connect((self.host,self.port))
         print("in c 2")
