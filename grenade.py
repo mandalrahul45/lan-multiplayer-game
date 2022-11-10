@@ -3,7 +3,7 @@ import pygame
 class Grenade(pygame.sprite.Sprite):
     def __init__(self,x,y,direc,deployer):
         super().__init__()
-        dist_to_explode =300
+        dist_to_explode =650
         self.deployer =deployer
         cases={
             "RIGHT":{"x":x+dist_to_explode,"y":y},

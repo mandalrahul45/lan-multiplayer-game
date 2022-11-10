@@ -3,11 +3,11 @@ from _thread import *
 import pickle
 import time
 import random 
-
+import json
 connected_clients=0
 unique_id = 0
 players={}
-s_game_time = "Waiting to start"
+s_game_time = "0"
 start_time=0
 game_state = "NOT RUNNING"
 to_send_gnd_cmd = {}
@@ -45,13 +45,18 @@ def addNewPlayerToServer(data,uid):
         "x":x,
         "y":y,
         "direction_facing":"RIGHT",
-        "health":100,
+        "health":500,
         "grenade_count":3
         
     }
 
-def greandeCollidedWith(pid):
-    pass
+
+def save_playerInfo():
+    while True:
+        if int(s_game_time) %10==0:
+            with open ('players_list.txt',"w") as plr_listFile:
+                json.dump(players,plr_listFile)
+
 def clientHandler(conn,unique_id):
 
     global connected_clients,players,s_game_time,game_state,to_send_gnd_cmd
@@ -135,7 +140,7 @@ def clientHandler(conn,unique_id):
     conn.close()
 
 
-
+start_new_thread(save_playerInfo,())
 while True:
     conn,addr = server_socket.accept()
     connected_clients+=1

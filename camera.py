@@ -50,14 +50,14 @@ class CameraGroup(pygame.sprite.Group):
             if isinstance(sprite,player.Player):
                 offset_pos = sprite.textRect.topleft - self.offset_vector + self.internal_offset
                 self.internal_surf.blit(sprite.text,offset_pos)
-            if isinstance(sprite,grenade.Grenade) or isinstance(sprite,player.Player):
-                # pygame.draw.rect(self.screen, "red",,  2)
-                if hasattr(sprite,"hitbox"):
-                    rec =  sprite.hitbox.copy()
-                    rec.centerx = rec.centerx-self.offset_vector.x
-                    rec.centery = rec.centery-self.offset_vector.y
+            # if isinstance(sprite,grenade.Grenade) or isinstance(sprite,player.Player):
+            #     # pygame.draw.rect(self.screen, "red",,  2)
+            #     if hasattr(sprite,"hitbox"):
+            #         rec =  sprite.hitbox.copy()
+            #         rec.centerx = rec.centerx-self.offset_vector.x
+            #         rec.centery = rec.centery-self.offset_vector.y
 
-                    pygame.draw.rect(self.internal_surf, "red",rec,  2)
+                    # pygame.draw.rect(self.internal_surf, "red",rec,  2)
 
         scaled_surf = pygame.transform.scale(self.internal_surf,self.internal_surface_size_vector * self.zoom_scale)
         scaled_rect = scaled_surf.get_rect(center = (self.half_w,self.half_h))

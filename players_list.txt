@@ -1,0 +1,1 @@
+{"0": {"name": "Rahul Mandal", "adm": 123, "score": 0, "characterType": 0, "x": 724, "y": 607, "direction_facing": "RIGHT", "health": 500, "grenade_count": 3}}

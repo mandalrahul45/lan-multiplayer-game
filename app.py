@@ -330,7 +330,7 @@ def main(adm,name):
             hbar.fill("white")
             screen.blit(hbar,(45,17))
 
-            hbar= pygame.Surface((int(150*(players[uid]["health"]/100)),10))
+            hbar= pygame.Surface((int(150*(players[uid]["health"]/500)),10))
             hbar.fill((84, 180, 53))
             
             screen.blit(hbar,(45,17))
