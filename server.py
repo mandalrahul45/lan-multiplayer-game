@@ -54,8 +54,15 @@ def addNewPlayerToServer(data,uid):
 def save_playerInfo():
     while True:
         if int(s_game_time) %10==0:
-            with open ('players_list.txt',"w") as plr_listFile:
-                json.dump(players,plr_listFile)
+            try:
+                with open('players_list.txt') as plr_listFile:
+                    saved_data = json.load(plr_listFile)
+            except:
+                saved_data={}
+            for plr in players:
+                saved_data[plr] = players[plr]
+            with open('players_list.txt',"w") as plr_listFile:
+                json.dump(saved_data,plr_listFile)
 
 def clientHandler(conn,unique_id):
 
