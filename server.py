@@ -16,8 +16,8 @@ ROUND_TIME_LIMIT = 15*60
 
 ENCODING_FORMAT = "UTF-8"
 server_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-SERVER_IP = "127.0.0.1"
-# SERVER_IP = socket.gethostbyname(socket.gethostname())
+# SERVER_IP = "127.0.0.1"
+SERVER_IP = socket.gethostbyname(socket.gethostname())
 PORT = 9999
 
 try:
@@ -33,7 +33,15 @@ print(f"[SERVER STARTED] AT {SERVER_IP}")
 print("[SERVER WAITING FOR CONNECTIONS]")
 
 def getSpawnLocation():
-    return (random.randint(10, 500),random.randint(10, 600))
+    spawnLocations=[[14,17],
+                    [25,9],
+                    [23,17],
+                    [13,11],
+                    # [51,16],
+                    # [43,11],
+                    [30,13]]
+    spawnLoc = random.choice(spawnLocations)
+    return (spawnLoc[0]*128,spawnLoc[1]*128)
 
 def addNewPlayerToServer(data,uid,addr):
     x,y = getSpawnLocation()

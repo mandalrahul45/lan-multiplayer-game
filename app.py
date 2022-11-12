@@ -18,10 +18,10 @@ HEIGHT=768
 
 MN = tkinter.Tk()
 MN.withdraw()
-# NAME_ENTERED = simpledialog.askstring(title="Name?",
-#                                   prompt="What's your Name?:")
-# ADM_NO_ENTERED = simpledialog.askstring(title="Adm no>?",
-#                                   prompt="What's your Admission No.?:")
+NAME_ENTERED = simpledialog.askstring(title="Name?",
+                                  prompt="What's your Name?:")
+ADM_NO_ENTERED = simpledialog.askstring(title="Adm no>?",
+                                  prompt="What's your Admission No.?:")
 IP_ENTERED = simpledialog.askstring(title="SERVER IP?",
                                   prompt="ENTER SERVER IP?:")
 
@@ -52,17 +52,17 @@ class Tile(pygame.sprite.Sprite):
         # self.image = pygame.transform.rotate(self.image,rttn)
         self.rect = self.image.get_rect(topleft = pos)
         self.hitbox = self.rect.copy()
-tmx_data = load_pygame('hello\\newmap.tmx')
+tmx_data = load_pygame('Main Base 1\\Main map.tmx')
 camera_group = CameraGroup(screen)
 collision_group = pygame.sprite.Group()
-Tile(pos=(0,0),surf = pygame.image.load("hello\\ground.png"),groups = camera_group)
+Tile(pos=(0,0),surf = pygame.image.load("Main Base 1\\Main map3.png"),groups = camera_group)
 
 
 for layer in tmx_data.visible_layers:
     if hasattr(layer,'data'):
         for x,y,surf in layer.tiles():
             pos = (x * 128, y * 128)
-            if layer.name=="wall":
+            if layer.name=="Walls" or layer.name=="Obstacles collidable":
                 Tile(pos = pos, surf = surf,groups = [camera_group,collision_group])
             
 # for obj in tmx_data.objects:
@@ -151,15 +151,19 @@ cmd_from_server ="noCommand"
 datagc = "cmd nothing"
 def collidedWithGrenade(server,allPlrSprite,myPlayerSprite,uid):
     global grenades,datagc
+    
     for plrSprite in allPlrSprite:
         for gds in grenades:
+            # if gds.hitbox.colliderect(collision_group):
+            #     gds.kill()
+            #     break
             if int(plrSprite.pid)!=int(gds.deployer )and plrSprite.hitbox.colliderect(gds):
-                print("greande collided")
-                print(gds.deployer,plrSprite.pid)
+                # print("greande collided")
+                # print(gds.deployer,plrSprite.pid)
                 gds.kill()
                 if plrSprite==myPlayerSprite:
                     #notify server of damage
-                    print("GOT HIT GO GIT GOT JIT")
+                    # print("GOT HIT GO GIT GOT JIT")
                     datagc = "tkdmg "+str(gds.deployer) +" "+str(uid)
                     # return()
 
@@ -183,14 +187,14 @@ def collidedWithGrenade(server,allPlrSprite,myPlayerSprite,uid):
                
 def main(adm,name):
     global players,game_time,grenades,datag,game_state,datagc
-    print(1)
+    # print(1)
     server = Connection()
-    print(2)
+    # print(2)
     uid = server.connect(adm,name,IP_ENTERED)
-    print(3)
+    # print(3)
     reply_data = server.send("get",True)
-    print(4)
-    print("rep data: ",reply_data)
+    # print(4)
+    # print("rep data: ",reply_data)
     players = reply_data[0]
     current_player = players[uid]
     direction_vector = pygame.math.Vector2()
@@ -280,22 +284,22 @@ def main(adm,name):
                 elif direction =="DOWN":
                     gyo+=30
                 datag ="adGd "+str(gxo)+" "+str(gyo)+" "+players[uid]["direction_facing"]+" "+str(uid)
-                print("space pressed")
+                # print("space pressed")
                 
             data_recved= server.send((data,datag,datagc),True)
             players,game_time,cmd_from_server=data_recved
             datagc="nothing"
             datag="nothing"
-            print(data_recved)
-            print(" ")
-            print("dgd : ",cmd_from_server)
+            # print(data_recved)
+            # print(" ")
+            # print("dgd : ",cmd_from_server)
             if cmd_from_server !="noCommand":
                 cmdlist = cmd_from_server.split()
                 if cmdlist[0]=="dgd":
                     gnds_sprite = Grenade(int(cmdlist[1]),int(cmdlist[2]),cmdlist[3],cmdlist[4])
                     camera_group.add(gnds_sprite)
                     grenades.add(gnds_sprite)
-                    print("sprite created")
+                    # print("sprite created")
                 
             if cmd_from_server =="dead":
                 # print("I'M DEAD I'M DEAD I'M DEAD I'M DEAD")
@@ -340,7 +344,7 @@ def main(adm,name):
 
             
             
-            print(5)
+            # print(5)
             
             
             
@@ -404,5 +408,5 @@ def main(adm,name):
 
 
     
-# main(ADM_NO_ENTERED,NAME_ENTERED)
-main(123,"Rahul Mandal")
+main(ADM_NO_ENTERED,NAME_ENTERED)
+# main(123,"Rahul Mandal")

@@ -11,18 +11,18 @@ class Connection:
     # TO DO: Create another parameterized constructor 
 
 
-    def connect(self, adm,name,IP_ENTERED):
-        # self.host = IP_ENTERED
-        print("in c 1")
+    def connect(self, adm="000",name="unknown",IP_ENTERED="127.0.0.1"):
+        self.host = IP_ENTERED
+        # print("in c 1")
         self.client_socket.connect((self.host,self.port))
-        print("in c 2")
+        # print("in c 2")
 
         self.client_socket.send(pickle.dumps((adm,name)))
-        print("in c 3")
+        # print("in c 3")
 
         #raw_data receives a unique id from the server
         raw_data = self.client_socket.recv(8)
-        print("in c 4")
+        # print("in c 4")
 
         return int(raw_data.decode("utf-8"))
 
