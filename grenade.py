@@ -27,26 +27,26 @@ class Grenade(pygame.sprite.Sprite):
 
         
         self.direc = direc
-    def update(self,dt):
+    def update(self):
         if self.direc =="RIGHT":
-            self.x+=700*dt
-            self.rect.centerx+=700*dt
+            self.x+=70
+            self.rect.centerx+=70
             self.hitbox.centerx = self.rect.centerx+30
 
         elif self.direc =="LEFT":
-            self.x-=700*dt
-            self.rect.centerx-=700*dt
+            self.x-=70
+            self.rect.centerx-=70
             self.hitbox.centerx = self.rect.centerx-30
 
 
         elif self.direc =="UP":
-            self.y-=700*dt
-            self.rect.centery-=700*dt
+            self.y-=70
+            self.rect.centery-=70
             self.hitbox.centery = self.rect.centery-30
 
         elif self.direc =="DOWN":
-            self.y+=700*dt
-            self.rect.centery+=700*dt
+            self.y+=70
+            self.rect.centery+=70
             self.hitbox.centery = self.rect.centery+30
 
         # self.hitbox.center = self.rect.center

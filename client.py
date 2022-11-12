@@ -12,7 +12,7 @@ class Connection:
 
 
     def connect(self, adm,name,IP_ENTERED):
-        self.host = IP_ENTERED
+        # self.host = IP_ENTERED
         print("in c 1")
         self.client_socket.connect((self.host,self.port))
         print("in c 2")
@@ -34,7 +34,7 @@ class Connection:
             else:
                 self.client_socket.send(str(data).encode("utf-8"))
                 
-            reply = self.client_socket.recv(2048*4)
+            reply = self.client_socket.recv(4096)
             try:
                 reply = pickle.loads(reply)
             except Exception as e:
@@ -46,5 +46,5 @@ class Connection:
             print(e)
     
     def disconnect(self):
-        self.client_socket.close("closeConn")
+        self.client_socket.close()
         self.client_socket.close()
