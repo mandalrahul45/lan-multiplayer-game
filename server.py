@@ -33,13 +33,13 @@ print(f"[SERVER STARTED] AT {SERVER_IP}")
 print("[SERVER WAITING FOR CONNECTIONS]")
 
 def getSpawnLocation():
-    spawnLocations=[[14,17],
-                    [25,9],
-                    [23,17],
-                    [13,11],
+    spawnLocations=[[15,11],
+                    [21,7],
+                    [12,18],
+                    [23,18],
                     # [51,16],
                     # [43,11],
-                    [30,13]]
+                    [26,20]]
     spawnLoc = random.choice(spawnLocations)
     return (spawnLoc[0]*128,spawnLoc[1]*128)
 
