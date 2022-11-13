@@ -15,7 +15,18 @@ pygame.init()
 #inititlized the screen and set caption:
 WIDTH =1280
 HEIGHT=768
+dm = """
+    
+ __  __    __    ____  ____      _    _  ____  ____  _   _        ____  _  _  ___    __    __  __  ____ 
+(  \/  )  /__\  (  _ \( ___)    ( \/\/ )(_  _)(_  _)( )_( )      (  _ \( \/ )/ __)  /__\  (  \/  )( ___)
+ )    (  /(__)\  )(_) ))__)      )    (  _)(_   )(   ) _ (        )___/ \  /( (_-. /(__)\  )    (  )__) 
+(_/\/\_)(__)(__)(____/(____)    (__/\__)(____) (__) (_) (_)      (__)   (__) \___/(__)(__)(_/\/\_)(____)
 
+"""
+print()
+print()
+print("|-------------------------------------------------------------------------------------------|")
+print(dm)
 MN = tkinter.Tk()
 MN.withdraw()
 NAME_ENTERED = simpledialog.askstring(title="Name?",
@@ -52,26 +63,26 @@ class Tile(pygame.sprite.Sprite):
         # self.image = pygame.transform.rotate(self.image,rttn)
         self.rect = self.image.get_rect(topleft = pos)
         self.hitbox = self.rect.copy()
-tmx_data = load_pygame('Main Base 1\\Main map.tmx')
+tmx_data = load_pygame('Last Base\\Main Base.tmx')
 camera_group = CameraGroup(screen)
 collision_group = pygame.sprite.Group()
-Tile(pos=(0,0),surf = pygame.image.load("Main Base 1\\Main map3.png"),groups = camera_group)
+Tile(pos=(0,0),surf = pygame.image.load("Last Base\ground.png"),groups = camera_group)
 
 
 for layer in tmx_data.visible_layers:
     if hasattr(layer,'data'):
         for x,y,surf in layer.tiles():
             pos = (x * 128, y * 128)
-            if layer.name=="Walls" or layer.name=="Obstacles collidable":
+            if layer.name=="Walls" or layer.name=="Object layer 1" or layer.name=="Collidable":
                 Tile(pos = pos, surf = surf,groups = [camera_group,collision_group])
             
-# for obj in tmx_data.objects:
-#     # print(dir(obj.image))
+for obj in tmx_data.objects:
+    # print(dir(obj.image))
 
-#     pos = obj.x,obj.y
+    pos = obj.x,obj.y
     
-#     # if obj.type in ('Building', 'Vegetation'):
-#     Tile(size=(obj.width,obj.height),pos = pos, surf = obj.image,rttn = obj.rotation, groups = camera_group)
+    # if obj.type in ('Building', 'Vegetation'):
+    Tile(pos = pos, surf = obj.image, groups = camera_group)
 
 
 def collision(position_vec,direction):
@@ -303,8 +314,24 @@ def main(adm,name):
                 
             if cmd_from_server =="dead":
                 # print("I'M DEAD I'M DEAD I'M DEAD I'M DEAD")
-                dm =""" __     ______  _    _   _____  _          _   _ \n \ \   / / __ \| |  | | |  __ \(_)        | | | |\n  \ \_/ / |  | | |  | | | |  | |_  ___  __| | | |\n   \   /| |  | | |  | | | |  | | |/ _ \/ _` | | |\n    | | | |__| | |__| | | |__| | |  __/ (_| | |_|\n    |_|  \____/ \____/  |_____/|_|\___|\__,_| (_)\n                                                 """
+                # dm =""" __     ______  _    _   _____  _          _   _ \n \ \   / / __ \| |  | | |  __ \(_)        | | | |\n  \ \_/ / |  | | |  | | | |  | |_  ___  __| | | |\n   \   /| |  | | |  | | | |  | | |/ _ \/ _` | | |\n    | | | |__| | |__| | | |__| | |  __/ (_| | |_|\n    |_|  \____/ \____/  |_____/|_|\___|\__,_| (_)\n                                                 """
+                print()
+
+                dm = """
+                 _____   ___  ___  ___ _____   _____  _   _ ___________   _ 
+                |  __ \ / _ \ |  \/  ||  ___| |  _  || | | |  ___| ___ \ | |
+                | |  \// /_\ \| .  . || |__   | | | || | | | |__ | |_/ / | |
+                | | __ |  _  || |\/| ||  __|  | | | || | | |  __||    /  | |
+                | |_\ \| | | || |  | || |___  \ \_/ /\ \_/ / |___| |\ \  |_|
+                 \____/\_| |_/\_|  |_/\____/   \___/  \___/\____/\_| \_| (_)
+
+                """
                 print(dm)
+                print()
+                print()
+                print("|-------------------------------------------------------------------------------------------|")
+                print("YOUR SCORE WAS: ",players[uid]["score"])
+                print("|-------------------------------------------------------------------------------------------|")
                 print()
                 print()
                 dm="""

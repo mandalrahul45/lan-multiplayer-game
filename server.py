@@ -16,8 +16,8 @@ ROUND_TIME_LIMIT = 15*60
 
 ENCODING_FORMAT = "UTF-8"
 server_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-# SERVER_IP = "127.0.0.1"
-SERVER_IP = socket.gethostbyname(socket.gethostname())
+SERVER_IP = "127.0.0.1"
+# SERVER_IP = socket.gethostbyname(socket.gethostname())
 PORT = 9999
 
 try:
