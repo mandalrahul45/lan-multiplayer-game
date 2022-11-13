@@ -406,7 +406,7 @@ def main(adm,name):
             screen.blit(heart_image,(8,8))
 
             # gd = pygame.image.load("ui\grenade.png")
-            gd_small = pygame.image.load("ui\\grenade small.png")
+            # gd_small = pygame.image.load("ui\\grenade small.png")
             
             hbar= pygame.Surface((150,10))
             hbar.fill("white")
@@ -417,12 +417,12 @@ def main(adm,name):
             
             screen.blit(hbar,(45,17))
 
-            screen.blit(gd_small,(5,79))
+            # screen.blit(gd_small,(5,79))
 
-            gc = font.render(str(players[uid]["grenade_count"]), True,"black")
-            textRect = gc.get_rect()
-            textRect.topleft = (43, 79)
-            screen.blit(gc,textRect)
+            # gc = font.render(str(players[uid]["grenade_count"]), True,"black")
+            # textRect = gc.get_rect()
+            # textRect.topleft = (43, 79)
+            # screen.blit(gc,textRect)
             display_leaderboard(uid)
             pygame.display.update()
             break
